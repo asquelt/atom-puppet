@@ -88,7 +88,8 @@ atom_install_ubuntu() {
 }
 
 atom_install_el() {
-    cat <<. | dosudo tee /etc/yum.repos.d/helber-atom.repo
+    if [ ! -f /etc/yum.repos.d/helber-atom.repo ] ; then
+        cat <<. | dosudo tee /etc/yum.repos.d/helber-atom.repo
 [helber-atom]
 name=Copr repo for atom owned by helber
 baseurl=https://copr-be.cloud.fedoraproject.org/results/helber/atom/epel-\$releasever-\$basearch/
@@ -98,6 +99,7 @@ gpgkey=https://copr-be.cloud.fedoraproject.org/results/helber/atom/pubkey.gpg
 enabled=1
 enabled_metadata=1
 .
+    fi
     [ -f /etc/yum.repos.d/epel.repo ] || dosudo rpm -i https://dl.fedoraproject.org/pub/epel/epel-release-latest-${VERSION_MAJ}.noarch.rpm
     which atom >/dev/null 2>/dev/null || dosudo yum -y -d0 install atom gcc-c++
 }
