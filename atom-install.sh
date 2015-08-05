@@ -2,6 +2,8 @@
 
 set -e
 
+exec 3<>/dev/tty
+
 if [ -f /etc/redhat-release ] && which rpm >/dev/null 2>/dev/null && rpm -qf /etc/redhat-release >/dev/null 2>/dev/null ; then
     PLATFORM='el'
     FLAVOR=$(rpm -qf /etc/redhat-release --qf=%{name})
@@ -31,7 +33,7 @@ __q() {
         default=0
         prompt="[y/N]"
     fi
-    read -e -p "$question $prompt " -N1 -t60 response
+    read -u 3 -e -p "$question $prompt " -N1 -t60 response
     if [ $default -eq 1 ] ; then
         if echo "$response"|grep -qi "n" ; then
             true
