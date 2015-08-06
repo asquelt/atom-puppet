@@ -218,8 +218,7 @@ atom_configure() {
     wordDiff: false
   "git-blame":
     ignoreWhiteSpaceDiffs: true
-  "linter-puppet-lint":
-    puppetLintExecutablePath: "/usr/bin/puppet-lint"
+  "linter-puppet-lint": {}
   "linter-puppet-parser": {}
   "git-diff":
     showIconsInEditorGutter: true
