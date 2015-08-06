@@ -18,4 +18,3 @@ strict-ssl = false
 # check: apm config get https-proxy
 .
 ```
-- Remote ATOM

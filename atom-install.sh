@@ -1,5 +1,6 @@
 #!/bin/bash
 
+
 set -e
 
 if [ -f /etc/redhat-release ] && which rpm >/dev/null 2>/dev/null && rpm -qf /etc/redhat-release >/dev/null 2>/dev/null ; then
@@ -84,7 +85,7 @@ dogem() {
 atom_install_ubuntu() {
     dosudo add-apt-repository -y ppa:webupd8team/atom
     dosudo apt-get -y -qq update
-    dosudo apt-get -y -qq install atom g++
+    dosudo apt-get -y -qq install atom g++ curl
 }
 
 atom_install_el() {
@@ -101,7 +102,7 @@ enabled_metadata=1
 .
     fi
     [ -f /etc/yum.repos.d/epel.repo ] || dosudo rpm -i https://dl.fedoraproject.org/pub/epel/epel-release-latest-${VERSION_MAJ}.noarch.rpm
-    which atom >/dev/null 2>/dev/null || dosudo yum -y -d0 install atom gcc-c++
+    which atom >/dev/null 2>/dev/null || dosudo yum -y -d0 install atom gcc-c++ curl
 }
 
 atom_install_check() {
@@ -150,6 +151,28 @@ atom_git_install() {
     git checkout HEAD
     git checkout $rev
     apm link .
+}
+
+atom_remote_install() {
+    u=https://raw.githubusercontent.com/aurora/rmate/master/rmate
+    t=~/ratom
+    [ -z "$q_atom_remote" ] && exit
+    if [ -d ~/bin ] ; then
+        t=~/bin/$(basename $t)
+    fi
+    echo "Installing $u to $t"
+    curl --silent --location "$u" > $t
+    [ $? -eq 0 ] && chmod a+rx $t && cat <<.
+
+Remote ATOM script has been installed to $t
+
+To use:
+    1) Copy $t to remote machine (ie. scp $t $USER@remote.server.name:$(dirname $t))
+    2) Launch ATOM locally
+    3) Enable remote server in Packages > Remote Atom > Start Server
+    4) Edit file on your remote with $(basename $t) (ie. $(basename $t) myfile)
+
+.
 }
 
 atom_install_packages() {
@@ -231,21 +254,14 @@ if [ $UID -eq 0 ] ; then
 fi
 
 case $PLATFORM in
-    el)
-        atom_install_el
+    el|ubuntu)
+        atom_install_$PLATFORM
         atom_install_check
-        atom_git_install_el
-        atom_puppet_install_el
+        atom_git_install_$PLATFORM
+        atom_puppet_install_$PLATFORM
         atom_install_packages
         atom_configure
-        ;;
-    ubuntu)
-        atom_install_ubuntu
-        atom_install_check
-        atom_git_install_ubuntu
-        atom_puppet_install_ubuntu
-        atom_install_packages
-        atom_configure
+        atom_remote_install
         ;;
     *)
         echo "Unsupported OS"
