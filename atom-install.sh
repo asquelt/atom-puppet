@@ -185,9 +185,9 @@ atom_install_packages() {
 
     [ ! -z "$q_atom_puppet" ] && apm install language-puppet
     [ ! -z "$q_atom_puppet" ] && apm install aligner-puppet
+    [ ! -z "$q_atom_puppet" ] && apm install linter-puppet-parser
 
     [ ! -z "$q_atom_puppet" ] && atom_git_install https://github.com/looneychikun/linter-puppet-lint.git 168990b
-    [ ! -z "$q_atom_puppet" ] && atom_git_install https://github.com/asquelt/linter-puppet-parser.git
 }
 
 atom_configure() {
