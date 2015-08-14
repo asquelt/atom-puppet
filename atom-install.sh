@@ -89,11 +89,16 @@ atom_install_ubuntu() {
 }
 
 atom_install_el() {
+    if [ "$FLAVOR" == "fedora" ] ; then
+        reponame="fedora"
+    else
+        reponame="epel"
+    fi
     if [ ! -f /etc/yum.repos.d/helber-atom.repo ] ; then
         cat <<. | dosudo tee /etc/yum.repos.d/helber-atom.repo
 [helber-atom]
 name=Copr repo for atom owned by helber
-baseurl=https://copr-be.cloud.fedoraproject.org/results/helber/atom/epel-\$releasever-\$basearch/
+baseurl=https://copr-be.cloud.fedoraproject.org/results/helber/atom/$reponame-\$releasever-\$basearch/
 skip_if_unavailable=True
 gpgcheck=1
 gpgkey=https://copr-be.cloud.fedoraproject.org/results/helber/atom/pubkey.gpg
