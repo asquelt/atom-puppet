@@ -9,7 +9,7 @@ curl --silent --location http://puppet.pl/atom.sh | bash
 
 # TODO
 - MAC (?)
-- WINDOWS (with bash?)
+- WINDOWS (with [chocolatey](https://chocolatey.org/packages/Atom)?)
 - APM behind firewall with proxy:
 ```
 cat <<. >>~/.atom/.apmrc
