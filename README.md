@@ -4,7 +4,7 @@ Install Atom editor as Puppet IDE
 # Installation
 
 ```
-curl --silent --location http://puppet.pl/atom.sh | bash
+curl --silent --location http://git.io/atom.pp | bash
 ```
 
 # TODO
